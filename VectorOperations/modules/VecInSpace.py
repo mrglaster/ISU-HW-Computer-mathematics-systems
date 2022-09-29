@@ -41,6 +41,7 @@ def vec_par(vec_1, vec_2):
     if vec_codircheck(vec_1, vec_2) and vec_modulo(vec_1) == vec_modulo(vec_2):
         return True
     return False
+
 #Проверка на равенство векторов с заданной точностью
 def vec_par_param(vec_1, vec_2, paramater):
     if not vector_exists(vec_1) or not vector_exists(vec_2):
