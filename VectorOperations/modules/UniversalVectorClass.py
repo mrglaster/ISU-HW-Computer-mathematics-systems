@@ -56,9 +56,7 @@ class UniversalVector:
 
 def vector_exists(vec1):
     """ А был ли  вектор"""
-    if vec1.get_dimensions() <= 0:
-        return False
-    return True
+    return len(vec1)>=1
 
 
 def dimensions_check(vec_1, vec_2):
