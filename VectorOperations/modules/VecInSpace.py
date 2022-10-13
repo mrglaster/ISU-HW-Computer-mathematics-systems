@@ -11,9 +11,7 @@ import modules.UniversalVectorClass as Uvc
 
 def vec_colinearcheck(vec_1, vec_2):
     """Коллинеарность векторов. На входе - 2 объекта класса UniversalVector"""
-    if not Uvc.dimensions_check(vec_1, vec_2):
-        print("Wrong dimensions amount!")
-        return False
+    Vbo.dimensions_allowence(vec_1, vec_2)
     colines = []
     for i in range(vec_1.get_dimensions()):
         if vec_2.get_dimval(i) == 0:
@@ -46,8 +44,8 @@ def vec_par(vec_1, vec_2):
 
 def vec_par_param(vec_1, vec_2, paramater):
     """Проверка на равенство векторов с заданной точностью"""
-    if not Uvc.vector_exists(vec_1) or not Uvc.vector_exists(vec_2):
-        raise ValueError("Vector doesn't exist!")
+    vector_existance(vec_1)
+    vector_existance(vec_2)
     for i in range(vec_1.get_dimensions()):
         if abs(vec_1.get_dimval(i) - vec_2.get_dimval(i)) >= paramater:
             return False
@@ -56,10 +54,7 @@ def vec_par_param(vec_1, vec_2, paramater):
 
 def vec_ortogonalcheck(vec_1, vec_2):
     """Ортогональны ли вектора"""
-    if not Uvc.dimensions_check(vec_1, vec_2):
-        raise ValueError(
-            f"Dimensions of vectors don't coincide: {vec_1.get_dimensions()} and {vec_2.get_dimensions()}"
-        )
+    Vbo.dimensions_allowence(vec_1=vec_1, vec_2=vec_2)
     if Vbo.vec_mulscalar(vec_1, vec_2) == 0:
         return True
     return False
@@ -67,24 +62,19 @@ def vec_ortogonalcheck(vec_1, vec_2):
 
 def vec_normalize(vec_1):
     """Нормализация вектора"""
-    if not Uvc.vector_exists(vec_1):
-        raise ValueError("Vector doesn't exist!")
+    Vbo.vector_existance(vec_1)
     return Vbo.vec_divnum(vec_1, Vbo.vec_modulo(vec_1))
 
 
 def vec_invercevec(vec_1):
     """Инверсия вектора"""
-    if not Uvc.vector_exists(vec_1):
-        raise ValueError("Vector doesn't exist!")
+    Vbo.vector_existance(vec_1)
     return Vbo.vec_mulnum(vec_1, -1)
 
 
 def vec_angle_bv_rad(vec_1, vec_2):
     """Угол между векторами. Ответ в радианах"""
-    if not Uvc.dimensions_check(vec_1, vec_2):
-        raise ValueError(
-            f"Dimensions of vectors don't coincide: {vec_1.get_dimensions()} and {vec_2.get_dimensions()}"
-        )
+    Vbo.dimensions_allowence(vec_1, vec_2)
     return acos(Vbo.vec_cosbv(vec_1, vec_2))
 
 
@@ -95,10 +85,7 @@ def vec_angle_bv_angle(vec_1, vec_2):
 
 def vec_cosbv(vec_1, vec_2):
     """Косинус между векторами"""
-    if not Uvc.dimensions_check(vec_1, vec_2):
-        raise ValueError(
-            f"Dimensions of vectors don't coincide: {vec_1.get_dimensions()} and {vec_2.get_dimensions()}"
-        )
+    Vbo.dimensions_allowence(vec_1, vec_2)
     return Vbo.vec_mulscalar(vec_1, vec_2) / (
         Vbo.vec_modulo(vec_1) * Vbo.vec_modulo(vec_2)
     )
@@ -106,18 +93,12 @@ def vec_cosbv(vec_1, vec_2):
 
 def vec_projection_scalar(vec_1, vec_2):
     """Скалярная проекция вектора 1 на вектор 2"""
-    if not Uvc.dimensions_check(vec_1, vec_2):
-        raise ValueError(
-            f"Dimensions of vectors don't coincide: {vec_1.get_dimensions()} and {vec_2.get_dimensions()}"
-        )
+    Vbo.dimensions_allowence(vec_1, vec_2)
     # Проекция вектора 1 на вектор 2
     return Vbo.vec_mulscalar(vec_1, vec_2) / Vbo.vec_modulo(vec_2)
 
 
 def vec_projection_vector(vec_1, vec_2):
     """Векторная проекция вектора 1 на вектор 2"""
-    if not Uvc.dimensions_check(vec_1, vec_2):
-        raise ValueError(
-            f"Dimensions of vectors don't coincide: {vec_1.get_dimensions()} and {vec_2.get_dimensions()}"
-        )
+    Vbo.dimensions_allowence(vec_1, vec_2)
     return Vbo.vec_mulnum(vec_2, vec_projection_scalar(vec_1, vec_2)/Vbo.vec_modulo(vec_2))
