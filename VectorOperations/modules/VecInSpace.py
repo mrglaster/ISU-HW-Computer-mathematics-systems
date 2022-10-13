@@ -18,6 +18,7 @@ def vec_colinearcheck(vec_1, vec_2):
     for i in range(vec_1.get_dimensions()):
         if vec_2.get_dimval(i) == 0:
             return False
+        # ???????
         colines.append(vec_1.get_dimval(i) / vec_2.get_dimval(i))
     cur = colines[0]
     for i in colines:
@@ -27,26 +28,12 @@ def vec_colinearcheck(vec_1, vec_2):
 
 
 def vec_codircheck(vec_1, vec_2):
-    """Проверка сонаправленности двух векторов"""
-    if not Uvc.dimensions_check(vec_1, vec_2):
-        raise ValueError(
-            f"Dimensions of vectors don't coincide: {vec_1.get_dimensions()} and {vec_2.get_dimensions()}"
-        )
-    if vec_colinearcheck(vec_1, vec_2) and vec_mulscalar(vec_1, vec_2) > 0:
-        return True
-    return False
-
+    """Проверка на сонаправленность векторов"""
+    return vec_cosbv(vec_1,vec_2) == 1
 
 def vec_contradircheck(vec_1, vec_2):
-    """Являются ли векторы противоположнонаправленными"""
-    if not Uvc.dimensions_check(vec_1, vec_2):
-        raise ValueError(
-            f"Dimensions of vectors don't coincide: {vec_1.get_dimensions()} and {vec_2.get_dimensions()}"
-        )
-    if vec_colinearcheck(vec_1, vec_2) and vec_mulscalar(vec_1, vec_2) < 0:
-        return True
-    return False
-
+    """Проверка на противоположнонаправленность"""
+    return vec_cosbv(vec_1, vec_2) == -1
 
 def vec_par(vec_1, vec_2):
     """Проверка на равенство векторов"""
@@ -133,4 +120,4 @@ def vec_projection_vector(vec_1, vec_2):
         raise ValueError(
             f"Dimensions of vectors don't coincide: {vec_1.get_dimensions()} and {vec_2.get_dimensions()}"
         )
-    return Vbo.vec_mulnum(vec_1, vec_projection_scalar(vec_1, vec_2))
+    return Vbo.vec_mulnum(vec_2, vec_projection_scalar(vec_1, vec_2)/Vbo.vec_modulo(vec_2))

@@ -11,7 +11,7 @@ class UniversalVector:
     def set_dimval(self, dimension, value):
         """Задать значение измерению вектора (x,y,z...)"""
         dimension += 1
-        if 0 < dimension <= self.int_dimensions:
+        if dimension > 0 and dimension <= self.int_dimensions:
             self.values[dimension] = int(value)
         else:
             raise ValueError(f"Unable to set dimension: {dimension}")
@@ -43,6 +43,14 @@ class UniversalVector:
 
     def __len__(self):
         return self.get_dimensions()
+
+    def __eq__(self, other):
+        if len(self)!=len(other):
+            return False
+        for i in range(len(self)):
+            if self.get_dimval(i) != other.get_dimval(i):
+                return False
+        return True
 
 
 
