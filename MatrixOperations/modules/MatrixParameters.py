@@ -16,48 +16,38 @@ def get_matrix_rows(matrix):
 
 def matrix_exists(matrix):
     """Проверка существования матрицы"""
-    if len(matrix) > 0:
-        if len(matrix[0]):
-            return True
-        return False
-    return False
+    return len(matrix) and len(matrix[0])
 
 
 def get_matrix_sizes(matrix):
     """Получить размерность матрицы"""
-    if matrix_exists(matrix):
-        return get_matrix_rows(matrix), get_matrix_cols(matrix)
-    raise ValueError("Unable to get sizes of unexisting matrix")
+    matrix_existance(matrix)
+    return get_matrix_rows(matrix), get_matrix_cols(matrix)
+
 
 
 def matrix_sizepar(matrix1, matrix2):
     """Равны ли размерности у матриц"""
-    if len(matrix1) == len(matrix2) and len(matrix1[0]) == len(matrix2[0]):
-        return True
-    return False
+    return len(matrix1) == len(matrix2) and len(matrix1[0]) == len(matrix2[0])
 
 
 def massive_existance_check(matrixes):
-    """Меняем строки местами"""
+    """Массовая проверка существования"""
     for i in matrixes:
-        if not matrix_exists(i):
-            raise ValueError(f"Matrix {i} doesn't exist!")
+        matrix_existance(i)
     return True
 
 
 def get_row_bid(matrix, id):
     """Получить строку по индексу"""
-    if id > len(matrix) or id < 0:
-        raise ValueError("Wrong matrix row!")
+    row_in_matrix(matrix, id)
     return matrix[id]
 
 
 def get_col_bid_arr(matrix, id):
     """Получить столбец матрицы по ID как массив"""
-    if not matrix_exists(matrix):
-        raise ValueError("Matrix doesn't exist!")
-    if id > len(matrix[0]) or id < 0:
-        raise ValueError("Wrong matrix column!")
+    matrix_existance(matrix)
+    row_in_matrix(matrix, id)
     array = []
     for i in range(len(matrix)):
         array.append(matrix[i].get_dimval(id))
