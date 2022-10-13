@@ -11,7 +11,7 @@ class UniversalVector:
     def set_dimval(self, dimension, value):
         """Задать значение измерению вектора (x,y,z...)"""
         dimension += 1
-        if dimension > 0 and dimension <= self.int_dimensions:
+        if 0 < dimension <= self.int_dimensions:
             self.values[dimension] = int(value)
         else:
             raise ValueError(f"Unable to set dimension: {dimension}")
