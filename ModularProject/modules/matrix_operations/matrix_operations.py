@@ -20,7 +20,6 @@ from modules.vector_operations.vec_basic_operations import *
 import copy
 
 
-
 def matrix_summ(matrix_1, matrix_2):
     """sum of matrices"""
     matrix_result = []
@@ -77,12 +76,12 @@ def matrix_mul_matrix(matrix1, matrix2):
         return matrix_mulresult
     raise ValueError("Matrix size aren't correct!")
 
+
 def matrix_div_matrix(matrix1, matrix2):
     """Divide matrix by matrix"""
     massive_existance_check([matrix1, matrix2])
-    #matrixes_canworktogether(matrix1, matrix2)
+    # matrixes_canworktogether(matrix1, matrix2)
     return matrix_mul_matrix(matrix1, inverse_matrix(matrix2))
-
 
 
 def mul_row_scalar(matrix, rowid, scalar, do_copy=False):
@@ -106,7 +105,7 @@ def dif_rows_multiplied(matrix, row1, row2, scalar):
         raise ValueError(f"Unavailable index(es): {row1} , {row2}")
     temp = vec_mulnum(matrix[row1], scalar)
     matrix[row2] = vec_diff(matrix[row2], temp)
-    #return matrix
+    # return matrix
 
 
 def sum_rows_multiplied(matrix, row1, row2, scalar):
@@ -127,6 +126,7 @@ def swap_rows(matrix, row1, row2):
     matrix[row2] = temp
     return matrix
 
+
 def swap_columns(matrix, col1, col2):
     """Swaps columns of matrix"""
     matrix_existance(matrix)
@@ -134,6 +134,7 @@ def swap_columns(matrix, col1, col2):
     rows_check(len(matrix), col1, col2)
     matrix = swap_rows(matrix, col1, col2)
     return transpose_matrix(matrix)
+
 
 def matrix_to_classic(matrix):
     """Converts a matrix from an Array of UniversalVectors to an Array of Arrays """
@@ -242,36 +243,103 @@ def matrix_delete_row(matrix, id):
 
 def get_matrix_minor(m, i, j):
     """Finds a minot of matrix m. Format of matix m: array of arrays"""
-    return [row[:j] + row[j + 1:] for row in (m[:i] + m[i + 1:])]
+    return [row[:j] + row[j + 1 :] for row in (m[:i] + m[i + 1 :])]
 
 
-def inverse_matrix(matrix):
-    """Find inverted matrix"""
-    matrix_existance(matrix)
-    determinant = get_determinant(matrix)
-    if determinant == 0:
-        raise ValueError("Inpossible to find the inverted matrix: Determinant = 0")
-    m = matrix_to_classic(matrix)
-    for i in range(len(m)):
-        for j in range(len(m[0])):
-            m[i][j] = float(m[i][j])
-    determinant = float(determinant)
-    if len(m) == 2:
-        result = [[m[1][1] / determinant, -1 * m[0][1] / determinant],
-                [-1 * m[1][0] / determinant, m[0][0] / determinant]]
-        return classic_to_vector(result)
+def _is_roundable(matrix):
+    """Is it possible to round elements of matrix?"""
+    if len(matrix) == 0:
+        raise ValueError("Unable to round elements of zero size matrix!")
+
+
+def round_matrix(matrix, round_number):
+    """Rounds elements of matrix if it's possible"""
+    _is_roundable(matrix)
+    _do_round_check(round_number)
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            matrix[i][j] = round(matrix[i][j], round_number)
+    return matrix
+
+
+def _do_round_check(round_after):
+    """Is rounding number available to be used?"""
+    if round_after < 0:
+        raise ValueError(f"Wrong rounding argument: {round_after} is below zero!")
+
+
+def inverse_twosized_matrix(m, determinant, do_round=False, round_after=0):
+    """Inverts matrix of size 2x2"""
+    matrix_existance(m)
+    if len(m) != 2 or len(m[0]) != 2:
+        raise ValueError("Wrong input matrix: 2x2 matrix excepted!")
+    determinant_zerocheck(determinant)
+    result = [
+        [m[1][1] / determinant, -1 * m[0][1] / determinant],
+        [-1 * m[1][0] / determinant, m[0][0] / determinant],
+    ]
+    if do_round:
+        round_matrix(result, round_after)
+    return classic_to_vector(result)
+
+
+def inverse_larger_matrix(m, determinant, do_round=False, round_after=0):
+    """Inverts matrix larger than 2x2"""
+    matrix_existance(m)
     cofactors = []
     for r in range(len(m)):
         cofactorRow = []
         for c in range(len(m)):
             minor = get_matrix_minor(m, r, c)
-            cofactorRow.append(((-1) ** (r + c)) * get_determinant(classic_to_vector(minor)))
+            cofactorRow.append(
+                ((-1) ** (r + c)) * get_determinant(classic_to_vector(minor))
+            )
         cofactors.append(cofactorRow)
     cofactors = matrix_to_classic(transpose_matrix(classic_to_vector(cofactors)))
     for r in range(len(cofactors)):
         for c in range(len(cofactors)):
             cofactors[r][c] = cofactors[r][c] / determinant
+    if do_round:
+        return classic_to_vector(round_matrix(cofactors, round_after))
     return classic_to_vector(cofactors)
+
+
+def _floatify_matrix(matrix):
+
+    """
+   #Turns matrix from matrixn of ints to matrix of floats
+    if len(matrix) == 0:
+        raise ValueError("Unable to floatify zero size matrix")
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            matrix[i][j] = float(matrix[i][j])
+    return matrix
+    """
+    return matrix
+
+def square_check(matrix):
+    """Throws error if current matrix isn't zero matrix"""
+    if not is_square_matrix(matrix):
+        raise ValueError("Unable to do operation with rectangular matrix")
+
+
+def determinant_zerocheck(determinant):
+    """Throws error if determinant = 0"""
+    if determinant == 0:
+        raise ValueError("Unable to do operation: Determinant is zero!")
+
+
+def inverse_matrix(matrix, do_round=False, round_after=0):
+    """Find inverted matrix"""
+    matrix_existance(matrix)
+    square_check(matrix)
+    determinant = get_determinant(matrix)
+    determinant_zerocheck(determinant)
+    m = _floatify_matrix(matrix_to_classic(matrix))
+    determinant = float(determinant)
+    if len(m) == 2:
+        return inverse_twosized_matrix(m, determinant, do_round, round_after)
+    return inverse_larger_matrix(m, determinant, do_round, round_after)
 
 
 def matrix_sort_md_rows(matrix):
@@ -286,17 +354,20 @@ def matrix_sort_md_rows(matrix):
                 swap_rows(matrix=matrix, row1=index_md, row2=j)
     return matrix
 
+
 def reverse_matrix_all(matrix):
     """Reverses direction of rows and columns in the matrix"""
     matrix = reverse_matrix_rows(matrix)
     matrix = reverse_matrix_cols(matrix)
     return transpose_matrix(matrix)
 
+
 def reverse_matrix_rows(matrix):
     """Reverse matrix rows"""
     for i in range(len(matrix) // 2):
-        matrix = swap_rows(matrix, i, len(matrix)-i-1)
+        matrix = swap_rows(matrix, i, len(matrix) - i - 1)
     return matrix
+
 
 def reverse_matrix_cols(matrix):
     """Reverse matrix columns"""
@@ -306,10 +377,10 @@ def reverse_matrix_cols(matrix):
     return matrix
 
 
-
 def get_copy(original_object):
     """Returns copy of original object"""
     return copy.deepcopy(original_object)
+
 
 def rows_check(len_matrix, row1, row2):
     """Do two rows belong to matrix?"""
@@ -324,10 +395,26 @@ def diff_matrix_rows(matrix, source_id, divider_id):
     matrix[source_id] = vec_diff(matrix[source_id], matrix[divider_id])
     return matrix
 
+
 def diff_two_matrix_rows(matrix_first, matrix_second, source_id, divider_id):
     if len(matrix_second) != len(matrix_first):
         raise ValueError("Unavailable matrices size")
     rows_check(len(matrix_first), source_id, divider_id)
-    matrix_first[source_id] = vec_diff(matrix_first[source_id], matrix_second[divider_id])
+    matrix_first[source_id] = vec_diff(
+        matrix_first[source_id], matrix_second[divider_id]
+    )
     return matrix_first
 
+
+def matrix_inverce_test(matrix):
+    test_matrix = matrix
+    inverted_one = inverse_matrix(test_matrix)
+    result = matrix_mul_matrix(classic_to_vector(test_matrix), inverted_one)
+    result = matrix_to_classic(result)
+    for i in range(len(result)):
+        for j in range(len(result[0])):
+            if not result[i][i]:
+                return False
+            if result[i][j] != 0 and j != i:
+                return False
+    return True

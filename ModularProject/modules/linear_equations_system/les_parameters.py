@@ -6,7 +6,7 @@ def is_valid_les(les):
     """Is current Linear equations system valid?"""
     matrix_existance(les, error_message="Current LES isn't valid!")
     if len(les) + 1 != len(les[0]):
-        raise ValueError("Input Linear equation system is not valid!")
+        raise ValueError(f"Input Linear equation system is not valid! {len(les)} x {len(les[0])}")
 
 def get_AMatrix(les):
     """Get A-matrix (Matrix of arguments)"""
