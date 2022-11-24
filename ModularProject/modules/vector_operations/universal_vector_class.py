@@ -43,6 +43,9 @@ class UniversalVector:
         """len operator overload"""
         return self.get_dimensions()
 
+    def __getitem__(self, item):
+        return self.get_dimval(item)
+
     def __eq__(self, other):
         """== operator overload"""
         if len(self) != len(other):
