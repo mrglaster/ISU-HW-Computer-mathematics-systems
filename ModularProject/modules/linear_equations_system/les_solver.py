@@ -40,7 +40,7 @@ def solve_les_gauss(combined_matrix, reversed=False):
 
 def solve_les_invmatrix(combined_matirx, answer_transpose=False):
     """Solves linear equation system with inverted matrix"""
-    matrix_existance(combined_matirx),
+    matrix_existance(combined_matirx)
     matrix_a = get_AMatrix(combined_matirx)
     matrix_b = get_resultsVector(combined_matirx)
     inverted_a = inverse_matrix(matrix_a, do_round=False)
@@ -49,6 +49,15 @@ def solve_les_invmatrix(combined_matirx, answer_transpose=False):
         return transpose_matrix(matrix_of_answers)
     return matrix_of_answers
 
+
+def solve_les_invmatrix_separated(matrix_a, matrix_b, answer_transpose=False):
+    matrix_existance(matrix_a)
+    matrix_existance(matrix_b)
+    inverted_a = inverse_matrix(matrix_a)
+    matrix_of_answers = matrix_mul_matrix(inverted_a, matrix_b)
+    if answer_transpose:
+        return transpose_matrix(matrix_of_answers)
+    return matrix_of_answers
 
 
 

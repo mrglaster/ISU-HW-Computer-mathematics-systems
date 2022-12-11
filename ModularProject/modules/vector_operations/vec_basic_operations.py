@@ -6,7 +6,7 @@ from math import sqrt
 from math import acos
 from modules.vector_operations.universal_vector_class import *
 from modules.vector_operations.vec_in_space import *
-
+from modules.matrix_operations.matrix_parameters import array_to_vec
 
 def vec_summ(vec_1, vec_2, debug=0):
     """ The sum of vectors of the same dimension amount """
@@ -85,3 +85,12 @@ def dimensions_allowence(vec_1, vec_2):
             f"Dimensions of vectors don't coincide: {vec_1.get_dimensions()} and {vec_2.get_dimensions()}"
         )
     return True
+
+
+def vec_power(vector, power):
+    """Powers all values of vector"""
+    vector_existance(vector)
+    result = []
+    for i in range(len(vector)):
+        result.append(pow(vector[i], power))
+    return array_to_vec(result)

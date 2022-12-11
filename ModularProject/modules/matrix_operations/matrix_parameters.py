@@ -47,7 +47,6 @@ def get_row_bid(matrix, id):
 def get_col_bid_arr(matrix, id):
     """Get column of matrix by id (returns array)"""
     matrix_existance(matrix)
-    row_in_matrix(matrix, id)
     array = []
     for i in range(len(matrix)):
         array.append(matrix[i].get_dimval(id))
@@ -74,7 +73,7 @@ def matrix_existance(matrix, error_message="Matrix doesn't exist!"):
 def row_in_matrix(matrix, rowid):
     """Is there a row with concrete ID in the  matrix?"""
     if rowid < 0 or rowid > len(matrix):
-        raise ValueError("Unavailable row index")
+        raise ValueError(f"Unavailable row index: {rowid}")
 
 
 def col_in_matrix(matrix, colid):

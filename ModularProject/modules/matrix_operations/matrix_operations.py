@@ -74,7 +74,7 @@ def matrix_mul_matrix(matrix1, matrix2):
                 )
             matrix_mulresult.append(array_to_vec(current_matrix))
         return matrix_mulresult
-    raise ValueError("Matrix size aren't correct!")
+    raise ValueError(f"Matrix size aren't correct: {len(matrix1)}x{len(matrix1[0])}  and {len(matrix2)}x{len(matrix2[0])}")
 
 
 def matrix_div_matrix(matrix1, matrix2):
@@ -149,7 +149,7 @@ def classic_to_vector(matrix):
     """Converts the matrix of the format Array of Arrays into an Array of UniversalVectors"""
     result = []
     if len(matrix) == 0:
-        raise ValueError("Wrong matrix size!")
+        raise ValueError("Matrix size can't be zero!")
     for i in range(len(matrix)):
         result.append(array_to_vec(matrix[i]))
     return result
@@ -258,7 +258,7 @@ def round_matrix(matrix, round_number):
     _do_round_check(round_number)
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
-            matrix[i][j] = round(matrix[i][j], round_number)
+            matrix[i].set_dimval(j, round(matrix[i].get_dimval(j), round_number))
     return matrix
 
 
@@ -418,3 +418,4 @@ def matrix_inverce_test(matrix):
             if result[i][j] != 0 and j != i:
                 return False
     return True
+

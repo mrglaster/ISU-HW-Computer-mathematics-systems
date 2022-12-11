@@ -1,7 +1,7 @@
 from modules.vector_operations.vec_io import parse_1vec_parametrised
 
 
-def print_matrix(matrix):
+def print_matrix(matrix, rounds_after_point=2):
     """Output matrix"""
     if len(matrix) == 0:
         return None
