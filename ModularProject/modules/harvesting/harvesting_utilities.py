@@ -12,7 +12,7 @@ def is_valid_leslie(leslie_matrix):
         raise ValueError(f"Wrong Leslie matrix. Got sizes: {len(leslie_matrix)}x{len(leslie_matrix[0])}")
 
 def get_params_leslie(leslie_matrix):
-    """Returns fertility and survival matrices by leslie matrix"""
+    """Returns fertility and survival matrices by Leslie matrix"""
     is_valid_leslie(leslie_matrix)
     fertility = leslie_matrix[0]
     survival = leslie_matrix[1:]
@@ -27,6 +27,7 @@ def get_harvesting_array(harvesting_matrix):
     return array_to_vec(result)
 
 def get_survival_array(survival_matrix):
+    """Returns survival coefficients as one UniversalVector"""
     result = []
     for i in range(len(survival_matrix)):
         for j in range(len(survival_matrix[0])):
