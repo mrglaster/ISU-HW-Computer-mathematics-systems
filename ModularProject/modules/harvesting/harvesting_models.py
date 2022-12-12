@@ -100,3 +100,12 @@ def get_x_youngest_harvesting(leslie_matrix):
         result_x.append(current_value)
         current_maxlen+=1
     return array_to_vec(result_x)
+
+
+def get_population_after_iterations(leslie_matrix, x_matrix, iterations):
+  """What happens with current population with current Leslie matrix after N iterations"""
+  result_x = copy.deepcopy(x_matrix)
+  leslie_copy = copy.deepcopy(leslie_matrix)
+  for i in range(iterations):
+    result_x = matrix_mul_matrix(leslie_copy, result_x)
+  return result_x
