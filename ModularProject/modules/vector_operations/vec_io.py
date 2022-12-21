@@ -61,7 +61,7 @@ def array_to_vec(array):
         raise ValueError("Wrong vector dimensions count: <=0")
     vec_1 = UniversalVector(int_dimensions=int_vecdims)
     for i in range(int_vecdims):
-        vec_1.set_dimval(i, float(array[i]))
+        vec_1[i] = float(array[i])
 
     return vec_1
 

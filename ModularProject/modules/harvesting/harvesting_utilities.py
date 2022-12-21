@@ -70,5 +70,3 @@ def get_leslie_eigenvalue(leslie_matrix):
     if result < 0 or result is None:
         raise ValueError(f"Positive maximal eigenvalue wasn't found! Matrix: {print_matrix(leslie_matrix)}")
     return float(max(w))
-
-

@@ -1,9 +1,5 @@
-from modules.matrix_operations.matrix_parameters import *
-from modules.linear_equations_system.les_parameters import *
 from modules.linear_equations_system.les_solver import *
-from modules.matrix_operations.matrix_parameters import *
 from modules.matrix_operations.matrix_operations import *
-from modules.interpolation.interpolation import solve_linear_equation
 
 
 def _generate_ones_array(length):
@@ -12,6 +8,7 @@ def _generate_ones_array(length):
     for i in range(length):
         ones_result.append(1)
     return array_to_vec(ones_result)
+
 
 def least_square_method(system):
     """Least squares method"""
@@ -23,8 +20,8 @@ def least_square_method(system):
     a_matrix = transpose_matrix(a_matrix)
     a_waved = matrix_mul_matrix(a_transposed, a_matrix)
     b_waved = transpose_matrix(matrix_mul_matrix(a_transposed, b_matrix))
-    if len(a_waved)==len(b_waved)==1:
-        return array_to_vec([b_waved[0][0]/a_waved[0][0]])
+    if len(a_waved) == len(b_waved) == 1:
+        return array_to_vec([b_waved[0][0] / a_waved[0][0]])
     return matrix_mul_matrix(b_waved, inverse_matrix(a_waved))
 
 
@@ -38,7 +35,7 @@ def _get_right_amatrix(approximation_power, copy_value):
     start = approximation_power
     while start >= 0:
         a_matrix.append(vec_power(copy_value[0], start))
-        start-=1
+        start -= 1
     return a_matrix
 
 
@@ -77,7 +74,7 @@ def linear_approximation(system, x_array, output_format='y'):
     for i in x_array:
         la_value = i * equation_parameters[0][0] + equation_parameters[0][1]
         if output_format == 'y':
-            our_result.appemd(la_value)
+            our_result.append(la_value)
         else:
             our_result.append(array_to_vec([i, la_value]))
     return our_result
@@ -89,9 +86,9 @@ def _calculate_power_value(equation_parameters, power, x):
     current_power = power
     cur_mul = 0
     while current_power > 0:
-        calculations_result+= pow(x, current_power) * equation_parameters[cur_mul]
-        cur_mul+=1
-        current_power -=1
+        calculations_result += pow(x, current_power) * equation_parameters[cur_mul]
+        cur_mul += 1
+        current_power -= 1
     calculations_result += equation_parameters[cur_mul]
     return calculations_result
 

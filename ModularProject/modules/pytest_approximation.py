@@ -56,3 +56,6 @@ def test_3power():
     test_x = [1, 3, 5]
     expected_result = [[1.0, 488.08], [3.0, 14975.59], [5.0, 113797.23]]
     result = round_matrix(power_polynomial_approximation(system=test_values, x_array=test_x, power=4, output_format='UV'), 2)
+    for i in range(len(expected_result)):
+        for j in range(len(expected_result[0])):
+            assert expected_result[i][j] == result[i][j]

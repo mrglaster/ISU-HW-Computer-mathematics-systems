@@ -109,3 +109,27 @@ def get_population_after_iterations(leslie_matrix, x_matrix, iterations):
   for i in range(iterations):
     result_x = matrix_mul_matrix(leslie_copy, result_x)
   return result_x
+
+
+GEMEIN_TEST_MATRIX = classic_to_vector([
+        [.000, .045, .391, .472, .484, .546, .543, .502, .468, .459, .433, .421],
+        [.845, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, .975, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, .965, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, .950, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, .926, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, .895, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, .850, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, .786, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, .691, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, .561, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, .370, 0]])
+
+test_matrix = copy.deepcopy(GEMEIN_TEST_MATRIX)
+expected_result = array_to_vec([1.0, 0.845, 0.8238749999999999, 0.7950393749999999, 0.7552874062499999, 0.6993961381874999, 0.6259595436778125, 0.5320656121261406, 0.4182035711311465, 0.28897866765162217, 0.16211703255256005, 0.05998330204444722])
+result = get_x_youngest_harvesting(test_matrix)
+for i in range(len(expected_result)):
+    if expected_result[i] != result[i]:
+        print(f"ERROR: {expected_result[i]} and {result[i]}, item = {i}")
+    else:
+        print(f"ALL IS FINE: {expected_result[i]} and {result[i]}" )

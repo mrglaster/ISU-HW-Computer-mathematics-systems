@@ -258,7 +258,7 @@ def round_matrix(matrix, round_number):
     _do_round_check(round_number)
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
-            matrix[i].set_dimval(j, round(matrix[i].get_dimval(j), round_number))
+            matrix[i][j] = round(matrix[i][j], round_number)
     return matrix
 
 

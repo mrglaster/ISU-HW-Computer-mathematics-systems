@@ -1,7 +1,3 @@
-from modules.matrix_operations import *
-from modules.vector_operations import *
-from modules.matrix_operations.matrix_operations import *
-from modules.matrix_operations.matrix_parameters import *
 from modules.interpolation.interpolation import *
 from matplotlib import pyplot as plt
 
